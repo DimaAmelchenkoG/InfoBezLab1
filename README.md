@@ -41,7 +41,6 @@
 ```
 
 ## API
-
 Все ответы — JSON. Закрытые методы ждут заголовок `Authorization: Bearer <token>`.
 
 ### 1. `POST /auth/login`
