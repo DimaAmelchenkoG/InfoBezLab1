@@ -5,8 +5,8 @@
 Дисциплина: Информационная безопасность  
 Работа 1: Разработка защищенного REST API с интеграцией в CI/CD
 
-ФИО: укажите полностью  
-Группа: укажите номер  
+ФИО: Амельченко Дмитрий Сергеевич  
+Группа: P3431 
 Год: 2026
 
 ## Описание
@@ -133,46 +133,20 @@ Hibernate отправляет значение отдельным параме�
 1. **SAST.** `./mvnw verify` собирает проект, прогоняет тесты и SpotBugs с плагином FindSecBugs. Порог — Medium. Отчёт: `target/reports/spotbugs.html`. В Actions он прикладывается артефактом `spotbugs-report`.
 2. **SCA.** Профиль Maven `sca` запускает OWASP Dependency-Check 13. База CVE берётся из готового кэша OWASP, отдельный ключ NVD не нужен. Сборка падает, если найдена уязвимость с CVSS от 9. HTML-отчёт прикладывается артефактом `dependency-check-report`.
 
-## Что приложить к сдаче
+## Приложения
 
-1. Публичный репозиторий GitHub или GitLab с этим кодом.
-2. Этот `README.md`.
-3. Ссылка на последний успешный запуск pipeline.
-4. Скриншоты зелёных job `Tests and SAST` и `SCA Dependency-Check` со вкладки Actions. Их нужно вставить ниже после первого успешного прогона.
+1. https://github.com/DimaAmelchenkoG/InfoBezLab1 - git репозиторий
+2. https://github.com/DimaAmelchenkoG/InfoBezLab1/actions/runs/36426440830 - ссылка на последний успешный запуск pipeline.
+<img width="1070" height="505" alt="image" src="https://github.com/user-attachments/assets/1dc8e6e4-f3ef-4e96-839a-26f07f8ace30" />
+
 
 ### Скриншоты CI
 
 После push откройте Actions, выберите последний успешный workflow и сохраните скриншоты сюда:
 
-- SAST (SpotBugs + FindSecBugs): `docs/sast.png`
-- SCA (OWASP Dependency-Check): `docs/sca.png`
+- SAST
+<img width="347" height="410" alt="image" src="https://github.com/user-attachments/assets/30e96152-a145-4ed9-b70f-f955c20dd941" />
 
-Письмо преподавателю: адрес `markina_t@itmo.ru`, тема `Фамилия И.О., номер группы, работа 1`. В письме — ссылка на репозиторий и ссылка на последний успешный pipeline.
+- SCA
+<img width="374" height="489" alt="image" src="https://github.com/user-attachments/assets/bce6d554-84af-4541-bfb6-00c8c7a193a4" />
 
-## Как проверить вручную
-
-```powershell
-$login = curl.exe -s -X POST http://localhost:8080/auth/login -H "Content-Type: application/json" -d "{\"username\":\"student\",\"password\":\"Student#Lab1\"}"
-$token = ($login | ConvertFrom-Json).token
-
-curl.exe -s http://localhost:8080/api/data
-curl.exe -s http://localhost:8080/api/data -H "Authorization: Bearer $token"
-curl.exe -s "http://localhost:8080/api/data?q=' OR '1'='1" -H "Authorization: Bearer $token"
-curl.exe -s -X POST http://localhost:8080/api/notes -H "Authorization: Bearer $token" -H "Content-Type: application/json" -d "{\"title\":\"<script>alert(1)</script>\",\"content\":\"test\"}"
-```
-
-Первый запрос данных без токена должен вернуть `401`. Поиск с `' OR '1'='1` должен вернуть `[]`. В ответе на создание заметки заголовок должен содержать `&lt;script&gt;`, а не исполняемый тег.
-
-## Контрольные вопросы
-
-**Почему bcrypt предпочтительнее SHA-256 для паролей?**  
-SHA-256 — быстрая функция. Видеокарта перебирает миллиарды хэшей в секунду, а без уникальной соли помогает радужная таблица. bcrypt специально медленный, сам хранит соль и стоимость вычисления. Стоимость можно поднять, когда железо станет быстрее, и старые хэши при этом остаются проверяемыми.
-
-**Чем SAST отличается от DAST?**  
-SAST смотрит исходный код или байткод и не запускает приложение. В этой работе это SpotBugs и FindSecBugs. DAST работает с уже запущенным сервисом снаружи, как OWASP ZAP: шлёт запросы и смотрит ответы. SAST раньше находит ошибки в коде, DAST видит конфигурацию и поведение на работающем стенде. Один подход не заменяет другой.
-
-**Как устроен JWT и как сервер проверяет его?**  
-Токен — это три части в Base64: заголовок, полезная нагрузка и подпись. В заголовке указан алгоритм HS256. В нагрузке — логин (`sub`), время выпуска (`iat`), срок (`exp`) и роль. Подпись — HMAC от первых двух частей на секрете сервера. Сервер заново считает подпись своим секретом и сравнивает её с присланной, затем проверяет срок. Совпала подпись и срок не вышел — токен подлинный. Сессия на сервере не хранится. Сама нагрузка не зашифрована, поэтому пароль в неё класть нельзя.
-
-**Чем опасны непроверенные зависимости?**  
-Чужой код попадает в приложение вместе с библиотеками, в том числе транзитивными. Известная ошибка в такой библиотеке эксплуатируется, даже если собственный код написан аккуратно. Пример такого класса проблем — Log4Shell. SCA (здесь OWASP Dependency-Check) сверяет версии с базой CVE до выпуска.
