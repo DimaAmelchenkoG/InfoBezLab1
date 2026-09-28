@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!--
+      Stateless JWT API: the browser does not attach the Authorization header
+      automatically, so cookie-style CSRF does not apply. CSRF protection stays
+      disabled only for this API.
+    -->
+    <Match>
+        <Class name="ru.itmo.is.lab1.config.SecurityConfig"/>
+        <Bug pattern="SPRING_CSRF_PROTECTION_DISABLED"/>
+    </Match>
+    <Match>
+        <Class name="ru.itmo.is.lab1.config.SecurityConfig"/>
+        <Bug pattern="CSRF_PROTECTION_DISABLED"/>
+    </Match>
+    <!--
+      SpotBugs flags getters and setters of Spring configuration objects and
+      constructor injection of collaborators. These are not security defects.
+    -->
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+</FindBugsFilter>

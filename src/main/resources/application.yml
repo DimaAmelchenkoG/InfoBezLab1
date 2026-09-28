@@ -1,0 +1,32 @@
+server:
+  port: 8080
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:secureapi;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:lab1-demo-jwt-secret-key-do-not-use-in-production}
+    ttl: 1h
+  demo-users:
+    - username: student
+      password: ${DEMO_STUDENT_PASSWORD:Student#Lab1}
+      display-name: Студент ИТМО
+    - username: admin
+      password: ${DEMO_ADMIN_PASSWORD:Admin#Lab1}
+      display-name: Администратор
