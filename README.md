@@ -142,8 +142,6 @@ Hibernate отправляет значение отдельным параме�
 
 ### Скриншоты CI
 
-После push откройте Actions, выберите последний успешный workflow и сохраните скриншоты сюда:
-
 - SAST
 <img width="347" height="410" alt="image" src="https://github.com/user-attachments/assets/30e96152-a145-4ed9-b70f-f955c20dd941" />
 
