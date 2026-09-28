@@ -71,10 +71,6 @@
 
 Необязательный параметр `q` ищет подстроку в заголовке и тексте. Значение передаётся в запрос связанным параметром, а не склеивается со строкой SQL.
 
-```powershell
-curl.exe -s http://localhost:8080/api/data -H "Authorization: Bearer ТОКЕН"
-curl.exe -s "http://localhost:8080/api/data?q=парол" -H "Authorization: Bearer ТОКЕН"
-```
 
 Без токена сервер отвечает `401`.
 
@@ -132,6 +128,9 @@ Hibernate отправляет значение отдельным параме�
 
 1. **SAST.** `./mvnw verify` собирает проект, прогоняет тесты и SpotBugs с плагином FindSecBugs. Порог — Medium. Отчёт: `target/reports/spotbugs.html`. В Actions он прикладывается артефактом `spotbugs-report`.
 2. **SCA.** Профиль Maven `sca` запускает OWASP Dependency-Check 13. База CVE берётся из готового кэша OWASP, отдельный ключ NVD не нужен. Сборка падает, если найдена уязвимость с CVSS от 9. HTML-отчёт прикладывается артефактом `dependency-check-report`.
+
+## Postman
+<img width="1197" height="504" alt="image" src="https://github.com/user-attachments/assets/4b479516-84ab-468e-a822-069e5ff65e2c" />
 
 ## Приложения
 
